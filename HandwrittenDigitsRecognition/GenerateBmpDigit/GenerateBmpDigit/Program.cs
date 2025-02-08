@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -14,9 +15,9 @@ class BitmapCreator
         else if (val.CompareTo(max) > 0) return max;
         else return val;
     }
-    static void CreateGrayscaleImage(double[] pixels, string outputPath)
+    static void CreateGrayscaleImage(ImageTrainingData pixels, string outputPath)
     {
-        if (pixels.Length != 784) // 28 * 28
+        if (pixels.Values.Count != 784) // 28 * 28
             throw new ArgumentException("Input array must contain exactly 784 values");
 
         // Create a new 28x28 Bitmap
@@ -44,7 +45,7 @@ class BitmapCreator
             {
                 for (int x = 0; x < 28; x++)
                 {
-                    double pixelValue = pixels[y * 28 + x];
+                    double pixelValue = pixels.Values[y * 28 + x];
                     byte byteValue = (byte)(Clamp(pixelValue, 0, 1) * 255);
                     imageData[y * bmpData.Stride + x] = byteValue;
                 }
@@ -61,32 +62,41 @@ class BitmapCreator
         }
     }
 
+    public class ImageTrainingData
+    {
+        public int Digit { get; set; }
+        public List<double> Values { get; set; } = new List<double>();
+    }
+    
 
-    public static List<List<double>> ReadDoubleValues(string filePath)
+    public static List<ImageTrainingData> ReadDoubleValues(string filePath)
     {
         try
         {
-            List<List<double>> result = new List<List<double>>();
-
-            // Read all lines from the file
-            string[] lines = File.ReadAllLines(filePath);
-
-            // Process each line
-            foreach (string line in lines)
+            var r = new List<ImageTrainingData>();
+            var lines = File.ReadAllLines(filePath);
+            var xx = 0;
+            while (xx < lines.Length)
             {
+                var line = lines[xx];
+                var itd = new ImageTrainingData { 
+                    Digit = int.Parse(line)
+                };
+                line = lines[xx+1];
                 if (!string.IsNullOrWhiteSpace(line))
                 {
                     // Split the line by comma and convert each value to double
-                    List<double> rowValues = line.Split(',')
+                    itd.Values = line.Split(',')
                         .Where(x => !string.IsNullOrWhiteSpace(x))
                         .Select(x => double.Parse(x.Trim()))
                         .ToList();
 
-                    result.Add(rowValues);
+                    r.Add(itd);
                 }
+                xx += 2;
             }
 
-            return result;
+            return r;
         }
         catch (FileNotFoundException)
         {
@@ -107,14 +117,18 @@ class BitmapCreator
         try
         {
             var outputFolder = @".\output";
-            if (!Directory.Exists(outputFolder))
-                Directory.CreateDirectory(outputFolder);
+            CreateDirIfNeeded(outputFolder);
+            Print("Reading...");
             var imagesPixels = ReadDoubleValues(@".\mnist_output.txt");
             var index = 0;
-            foreach(var image in imagesPixels)
+            Print("Creating images...");
+            foreach (var image in imagesPixels)
             {
-                CreateGrayscaleImage(image.ToArray(), Path.Combine(outputFolder, $"image_{index:000000}.bmp"));
-                if(index % 1000 == 0)
+                var outputFolder2 = Path.Combine(outputFolder, $"{image.Digit}");
+                CreateDirIfNeeded(outputFolder2);
+                var outputPath = Path.Combine(outputFolder2, $"img_{image.Digit}_{index:000000}.bmp");
+                CreateGrayscaleImage(image, outputPath);
+                if (index % 1000 == 0)
                     Console.WriteLine($"Image {index} created successfully!");
                 index++;
             }
@@ -125,5 +139,16 @@ class BitmapCreator
         {
             Console.WriteLine($"Error creating image: {ex.Message}");
         }
+    }
+
+    private static void Print(string v)
+    {
+        Console.WriteLine(v);
+    }
+
+    private static void CreateDirIfNeeded(string outputFolder2)
+    {
+        if (!Directory.Exists(outputFolder2))
+            Directory.CreateDirectory(outputFolder2);
     }
 }
