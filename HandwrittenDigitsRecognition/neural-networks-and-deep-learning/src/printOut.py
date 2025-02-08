@@ -1,11 +1,22 @@
 import gzip
 import pickle
 import numpy as np
+import os
+
+def delete_file_if_exists(file_path):
+    try:
+        if os.path.exists(file_path):
+            os.remove(file_path)
+            print(f"File {file_path} was deleted successfully")
+        else:
+            print(f"File {file_path} does not exist")
+    except Exception as e:
+        print(f"Error deleting file {file_path}: {str(e)}")
 
 def save_mnist_to_text(input_file="../data/mnist.pkl.gz", output_file="./mnist_output.txt"):
     try:
-        # Load the MNIST dataset from the pickle file
-        with gzip.open(input_file, 'rb') as f:
+        delete_file_if_exists(output_file)
+        with gzip.open(input_file, 'rb') as f: # Load the MNIST dataset from the pickle file
             # The MNIST pickle file contains three tuples: training, validation, and test sets
             train_set, valid_set, test_set = pickle.load(f, encoding='latin1')
             
@@ -17,13 +28,22 @@ def save_mnist_to_text(input_file="../data/mnist.pkl.gz", output_file="./mnist_o
             # Combine all data
             ##all_data = np.vstack((train_data, valid_data, test_data))
             all_data = np.vstack((train_data))
+            all_labels = np.concatenate((train_labels, valid_labels, test_labels))
+
+            #print(f"Successfully processed {len(all_labels)} labels")
+            print(f"Dataset composition:")
+            print(f"Training set: {len(train_labels)},{len(train_data)},{len(train_set)}, images")
+            print(f"Output written to: {output_file}")
             
             # Open output file and write each image as a comma-separated line
+            x = 0
             with open(output_file, 'w') as out_f:
                 for image in all_data:
-                    # Convert pixel values to strings and join with commas
-                    line = ','.join(str(pixel) for pixel in image)
+                    label = all_labels[x]
+                    out_f.write(f"{label}\n")
+                    line = ','.join(str(pixel) for pixel in image) # Convert pixel values to strings and join with commas
                     out_f.write(line + '\n')
+                    x = x + 1
                     
         print(f"Successfully processed {len(all_data)} images")
         print(f"Data shape: {all_data.shape}")
