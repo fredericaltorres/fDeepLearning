@@ -6,7 +6,7 @@ FRED REPO IS
 
 # Digit Recognition Video
 Neural Networks 009: Stochastic Gradient Descent (https://www.youtube.com/watch?v=HSJgWG0fcVw)
-
+I Built a Neural Network in C# From Scratch. Here’s What I Learned… (https://www.youtube.com/watch?v=wgNZWnua-90)
 
 # Embedding Space
 
