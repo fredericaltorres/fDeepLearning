@@ -61,19 +61,13 @@ namespace DigitRecognizer.MachineLearning.Pipeline
             }
 
             if (dataLoader == null)
-            {
                 throw new ArgumentNullException(nameof(dataLoader));
-            }
 
             if (optimizer == null)
-            {
                 throw new ArgumentNullException(nameof(optimizer));
-            }
 
             if (neuralNetworkModel == null)
-            {
                 throw new ArgumentNullException(nameof(neuralNetworkModel));
-            }
 
             // Indicate the start of training.
             PipelineSettings.IsPipelingRunning = true;

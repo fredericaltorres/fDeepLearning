@@ -15,8 +15,9 @@ using DigitRecognizer.MachineLearning.Providers;
 
 namespace DigitRecognizer.Engine
 {
-    // https://www.youtube.com/watch?v=XkXGrQ5RqgU
+    // 
     // https://www.youtube.com/watch?v=wgNZWnua-90
+    // Building a Custom Neural Network in C# | AI and Machine Learning Tutorial (https://www.youtube.com/watch?v=XkXGrQ5RqgU)
     // https://www.youtube.com/watch?v=GW6ZkGvtREA C# embedding
     internal class Program
     {
@@ -41,9 +42,13 @@ namespace DigitRecognizer.Engine
                 //new NnLayer(200, 100, new LeakyRelu()),
                 //new NnLayer(100, 10, new Softmax())
 
-                new NnLayer(784, 15, new LeakyRelu()),
-                new NnLayer(15, 15, new LeakyRelu()),
-                new NnLayer(15, 10, new Softmax())
+                //new NnLayer(784, 15, new LeakyRelu()),
+                //new NnLayer(15, 15, new LeakyRelu()),
+                //new NnLayer(15, 10, new Softmax())
+
+                new NnLayer(784, 64, new LeakyRelu()),
+                new NnLayer(64,  32, new LeakyRelu()),
+                new NnLayer(32,  10, new Softmax())
 
                 //new NnLayer(784, 15, new LeakyRelu()),
                 //new NnLayer(15, 10, new Softmax())
