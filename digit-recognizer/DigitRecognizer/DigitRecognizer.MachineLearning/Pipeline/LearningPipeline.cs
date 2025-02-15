@@ -76,10 +76,7 @@ namespace DigitRecognizer.MachineLearning.Pipeline
             for (var epoch = 0; epoch < PipelineSettings.EpochCount; epoch++)
             {
                 PipelineSettings.CurrentEpoch = epoch + 1;
-
                 ConsoleUtility.WriteLine($"Current epoch: {PipelineSettings.CurrentEpoch} / {PipelineSettings.EpochCount}");
-                
-
                 if (PipelineSettings.UseLearningRateDecay)
                 {
                     ApplyLearningRateScheduler(neuralNetworkModel);
