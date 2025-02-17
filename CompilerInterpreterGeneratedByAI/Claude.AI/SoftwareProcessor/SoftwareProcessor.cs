@@ -64,6 +64,11 @@ namespace SoftwareProcessorNP
             _compareFlag = false;
         }
 
+        private static string ProcessLF(string line)
+        {
+            return line.Replace("\\n", "\r\n");
+        }
+
         public void LoadProgram(string assemblyCode)
         {
             string[] lines = assemblyCode.Split('\n');
@@ -87,7 +92,7 @@ namespace SoftwareProcessorNP
                             var parts = dataLine.Split(new[] { "DB" }, StringSplitOptions.RemoveEmptyEntries);
                             string label = parts[0].Trim();
                             string value = parts[1].Trim().Trim('"');
-                            stringData[label] = value;
+                            stringData[label] = ProcessLF(value);
                         }
                         i++;
                     }
@@ -127,13 +132,18 @@ namespace SoftwareProcessorNP
 
             switch (opcode)
             {
+                case "PRINT":
+                    Console.WriteLine($"Register {parts[1]} = {GetRegisterValue(GetRegisterIndex(parts[1]))}");
+                    _IP++;
+                    break;
+
                 case "PRINTS":
                     if (parts[1].StartsWith("\""))
-                        Console.WriteLine(instruction.Replace("PRINTS ", ""));
+                        Console.Write(ProcessLF(instruction.Replace("PRINTS ", "").Replace(@"""","").Trim()));
                     else
                     {
                         if (stringData.TryGetValue(parts[1], out string value))
-                            Console.WriteLine(value);
+                            Console.Write(value);
                         else
                             throw new Exception($"Undefined string: {parts[1]}");
                     }
@@ -257,11 +267,6 @@ namespace SoftwareProcessorNP
 
                 case "HLT":
                     _isHalted = true;
-                    break;
-
-                case "PRINT":
-                    Console.WriteLine($"Register {parts[1]} = {GetRegisterValue(GetRegisterIndex(parts[1]))}");
-                    _IP++;
                     break;
 
                 case "READ":

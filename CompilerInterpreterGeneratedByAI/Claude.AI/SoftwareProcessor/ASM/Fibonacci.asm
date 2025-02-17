@@ -1,10 +1,10 @@
 ﻿; Program to compute Fibonacci sequence with text output
 .data
-    welcome_msg     DB ""Fibonacci Sequence Calculator""
+    welcome_msg     DB ""Fibonacci Sequence Calculator\n""
     number_msg      DB ""Fibonacci number: ""
     done_msg        DB ""Calculation complete!""
 
-PRINTS ""*** Fibonacci Sequence Calculator ***""
+PRINTS welcome_msg
 
 ; Registers used:
 ; R0 - First number (previous)
@@ -17,11 +17,13 @@ PRINTS ""*** Fibonacci Sequence Calculator ***""
     MOV R0, 0       ; First number
     MOV R1, 1       ; Second number
     MOV R3, 0       ; Initialize counter
-    MOV R4, 10      ; Calculate first 10 numbers
+    MOV R4, 32      ; Calculate first 10 numbers
 
     ; Print initial values
+    PRINTS number_msg
+    PRINTS "\n"
     PRINT R0        ; Print first number (0)
-    PRINT R1        ; Print second number (1)
+    ;PRINT R1        ; Print second number (1)
     ADD R3, 2       ; Increment counter by 2 (we've printed 2 numbers)
 
 loop:
@@ -30,7 +32,7 @@ loop:
     ADD R2, R0      ; Add previous number to get next number
     
     ; Print the calculated number
-    PRINTS number_msg
+    
     PRINT R2        ; Display next Fibonacci number
     
     ; Shift numbers for next iteration
