@@ -40,7 +40,7 @@ Claude.AI made a few minor mistakes around
 
 namespace SoftwareProcessorNP
 {
-    public class SoftwareProcessor
+    public class SoftwareProcessor_ClaudeAI
     {
         private int[] _registers = new int[8]; // R0 to R7
         private Dictionary<string, int> _labels = new Dictionary<string, int>();

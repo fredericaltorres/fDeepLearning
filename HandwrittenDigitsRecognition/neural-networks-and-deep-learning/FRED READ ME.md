@@ -29,10 +29,12 @@ Videos:
     Visualizing transformers and attention | Talk for TNG Big Tech Day '24 (https://www.youtube.com/watch?v=KJtZARuO3JY&t=1477s)
     Transformers (how LLMs work) explained visually | DL5 (https://www.youtube.com/watch?v=wjZofJX0v4M)
     Let's build GPT: from scratch, in code, spelled out. (https://www.youtube.com/watch?v=kCc8FmEb1nY)
+    ChatGPT is made from 100 million of these [The Perceptron] (https://www.youtube.com/watch?v=l-9ALe3U-Fg)
+    Loss Functions - EXPLAINED! (https://www.youtube.com/watch?v=QBbC3Cjsnjg)
 
 Blogs:
     Attention in Transformers (https://medium.com/lazy-by-design/attention-in-transformers-3blue1brown-fbba4e826ab4)
 
-
 Authors:
     michael nielsen deep learning (http://neuralnetworksanddeeplearning.com/)
+    
