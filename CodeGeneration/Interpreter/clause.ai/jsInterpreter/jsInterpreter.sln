@@ -5,7 +5,12 @@ VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jsInterpreter", "jsInterpreter\jsInterpreter.csproj", "{B8BF1FD6-468C-4AB6-8FB4-0D2788F4F83A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jsInterpreterTests", "jsInterpreterTests\jsInterpreterTests.csproj", "{78E5F6F0-5EC6-4F85-B235-E2E5A4EEE900}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "jsInterpreterTests", "jsInterpreterTests\jsInterpreterTests.csproj", "{78E5F6F0-5EC6-4F85-B235-E2E5A4EEE900}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Prompt", "Prompt", "{F4B24F4D-C1F2-4252-9D47-226DFD7EAE02}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\CodeGeneration.prompt.md = ..\..\..\CodeGeneration.prompt.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

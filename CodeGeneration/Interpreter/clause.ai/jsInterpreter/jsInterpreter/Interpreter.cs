@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace JSInterpreter
 {
-    #region Interpreter
-
     public class Interpreter : ASTExpr.IVisitor<object>, Statment.IVisitor<object>
     {
         public readonly InterpreterEnvironment Globals = new InterpreterEnvironment();
@@ -13,12 +12,13 @@ namespace JSInterpreter
         public Interpreter()
         {
             _environment = Globals;
-
             // Define native functions
             // Globals.Define("clock", new ClockFunction());
         }
 
+
         public void Interpret(List<Statment> statements)
+
         {
             try
             {
@@ -28,6 +28,7 @@ namespace JSInterpreter
             catch (RuntimeException error)
             {
                 Console.WriteLine(error.Message);
+                throw;
             }
         }
 
@@ -159,28 +160,22 @@ namespace JSInterpreter
                 case TokenType.MINUS:
                     CheckNumberOperands(expr.Operator, left, right);
                     return (double)left - (double)right;
+
                 case TokenType.PLUS:
                     if (left is double && right is double)
-                    {
                         return (double)left + (double)right;
-                    }
 
                     if (left is string && right is string)
-                    {
                         return (string)left + (string)right;
-                    }
 
                     if (left is string && right is double)
-                    {
                         return (string)left + Stringify(right);
-                    }
 
                     if (left is double && right is string)
-                    {
                         return Stringify(left) + (string)right;
-                    }
 
                     throw new RuntimeException(expr.Operator, "Operands must be two numbers or two strings.");
+
                 case TokenType.SLASH:
                     CheckNumberOperands(expr.Operator, left, right);
                     return (double)left / (double)right;
@@ -214,20 +209,14 @@ namespace JSInterpreter
 
             List<object> arguments = new List<object>();
             foreach (var argument in expr.Arguments)
-            {
                 arguments.Add(Evaluate(argument));
-            }
 
             if (!(callee is ICallable))
-            {
                 throw new RuntimeException(expr.Paren, "Can only call functions and classes.");
-            }
 
             ICallable function = (ICallable)callee;
             if (arguments.Count != function.Arity())
-            {
                 throw new RuntimeException(expr.Paren, $"Expected {function.Arity()} arguments but got {arguments.Count}.");
-            }
 
             return function.Call(this, arguments);
         }
@@ -247,15 +236,30 @@ namespace JSInterpreter
             object left = Evaluate(expr.Left);
 
             if (expr.Operator.Type == TokenType.OR)
-            {
                 if (IsTruthy(left)) return left;
+                else
+                if (!IsTruthy(left)) return left;
+
+            return Evaluate(expr.Right);
+            /*
+            bool left = (bool)Evaluate(expr.Left);
+
+            if (expr.Operator.Type == TokenType.OR)
+            {
+                if(left)
+                    return true;
+            }
+            else if (expr.Operator.Type == TokenType.AND)
+            {
+                if (left)
+                    return Evaluate(expr.Right);
             }
             else
             {
-                if (!IsTruthy(left)) return left;
+                Debugger.Break();
             }
 
-            return Evaluate(expr.Right);
+            return false;*/
         }
 
         public object VisitUnaryExpr(ASTExpr.Unary expr)
@@ -327,15 +331,11 @@ namespace JSInterpreter
             {
                 string text = obj.ToString();
                 if (text.EndsWith(".0"))
-                {
                     text = text.Substring(0, text.Length - 2);
-                }
                 return text;
             }
 
             return obj.ToString();
         }
     }
-
-    #endregion
 }

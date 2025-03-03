@@ -10,11 +10,10 @@ Using C# generate a lexer class.
 - The lexer should accept nested block using the character '{' for start block 
 and '}' for end block
 
-
 - Write unit tests.
 
 
-# Generation programming language runtime
+# Generation programming language runtime - Using Claude.AI
 
 Using C# version 7 ONLY and .NET Framework 4.8 syntax, generate a small JavaScript like interpreter.
 Create a lexer class, a parser class and an interpreter class.
@@ -28,3 +27,8 @@ The interpreter should support:
 - print function to print to the console.
 
 Write unit-tests as example.
+
+
+## AI Engine
+I tried Mistral.ai/pro, Perplex.ai, and Claude.ai. 
+Claude.ai produced C# code that compile and works perfectly.

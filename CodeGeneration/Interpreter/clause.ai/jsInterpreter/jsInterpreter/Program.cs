@@ -7,10 +7,9 @@ namespace JSInterpreter
 {
     public class FredInterpreter
     {
-        private static readonly Interpreter Interpreter = new Interpreter();
-
         public static object Run(string source)
         {
+            Interpreter Interpreter = new Interpreter();
             var lexer = new Lexer(source);
             List<Token> tokens = lexer.ScanTokens();
 
